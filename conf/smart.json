@@ -1,0 +1,9 @@
+{
+    "port" : 6606,
+    "static_home" : "/Users/a1/kylin/smart-web/",
+    "data_home" : "/Users/a1/kylin/imgs/",
+    "python_home" : "/Users/a1/kylin/smart-web/python/",
+    "MAX_SIZE" : 400,
+    "DELAY" : 100,
+    "WAIT_FOR" : 20
+}
