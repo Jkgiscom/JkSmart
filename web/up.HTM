@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>文件上传示例</title>
+    <script src="js/jquery-3.6.2.min.js"></script>
+    <style>
+        #progressBar {
+            width: 200px;
+            height: 20px;
+            border: 1px solid #000;
+            background-color: #99ccff;
+        }
+    </style>
+</head>
+<body>
+    <h2>文件上传示例</h2>
+    <form action="upload.php" method="post" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file" onchange="selectFile(this);">
+        <button type="button" id="uploadButton">上传</button>
+    </form>
+    <div id="progressBar" style="width: 0;"></div>
+
+    <script>
+        var files = null ;
+        function selectFile(evt){
+            files = evt.files; 
+        }
+        $("#uploadButton").click(function() {
+            var file = files[0];// $("#fileInput").files[0];//.prop("files")[0];
+            var formData = new FormData();
+            formData.append("file", file);
+
+            $.ajax({
+                type: "POST",
+                url: "index/index.HTM",
+                data: formData,
+                contentType: false,
+                processData: false,
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = (evt.loaded / evt.total) * 100;
+                            $("#progressBar").css("width", percentComplete + "%");
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function(response) {
+                    alert("上传成功！");
+                },
+                error: function() {
+                    alert("上传失败！");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

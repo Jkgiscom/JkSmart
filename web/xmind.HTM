@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../js/jquery.json-viewer.min.css">
+    <link rel="stylesheet" href="../css/jsmind.css">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 99%;
+            color: #888;
+        }
+
+        footer {
+            display: block;
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            overflow-x: auto;
+            box-sizing: border-box;
+            border-top: 1px solid #ccc;
+        }
+
+        footer li {
+            display: block;
+            float: left;
+            width: auto;
+            padding: 10px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        footer li.down {
+            color: #555;
+            font-size: 15px;
+        }
+
+        #page {
+            display: block;
+            width: 98%;
+            height: calc(98% - 25px);
+            border: 0px solid #eee;
+            box-sizing: border-box;
+            margin: 1%;
+            overflow-y: auto;
+        }
+
+        pre {
+            width: 100%;
+            height: auto;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page">
+    </div>
+    <pre></pre>
+    <footer></footer>
+</body>
+<script src="../js/jquery-3.6.2.min.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/jquery.json-viewer.min.js"></script>
+<script src="../js/jsmind.js"></script>
+<script src="../js/jsmind.draggable-node.js"></script>
+
+</html>
+<script>
+    window.onload = () => {
+        let path = request.getParameter("url");
+        path = path.substring(0, path.lastIndexOf("."));
+        console.log(path);
+        let server = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+        console.log(server + path)
+        webRoot = server + path;
+        let datas = [];
+        $.ajax(server + path + "/index.HTM", {
+            type: 'GET',
+            dataType: 'json', //服务器返回json格式数据
+            timeout: 15000, //15秒超时
+            success: function (rs) {
+                console.log(rs);
+                datas = rs;
+                let pages = rs.length / 3;
+                console.log(pages)
+                for (let i = 0; i < pages; i++) {
+                    let css = '';
+                    if (i == 0) {
+                        css = 'down';
+                    }
+                    $("footer").append('<li xid="' + i + '" class="' + css + '">' + rs[i * 3].value + '</li>')
+                }
+
+                $("footer li").on('click', function () {
+                    console.log(this)
+                    let idx = eval(this.getAttribute("xid"));
+                    $("footer li").removeClass('down')
+                    $(this).addClass('down')
+
+                    $("#page pre").jsonViewer(datas[idx * 3 + 1]);
+                    $("#page").html('')
+                    let root = datas[idx * 3 + 1]
+                    let _datas = [{ id: 'root', isroot: true, topic: root.children[0].value, order:0 }]
+                    
+                    let nodes = root.children[1].children;
+                    let count = 0;
+
+                    function setData(_nodes, pid, level){
+                        for (let j = 0; j < _nodes.length; j++) {
+                            let node = _nodes[j]
+                            //if(node!='topics')continue
+                            if (node.name == "title") {
+                                count++
+                                _datas.push({ id: 'sub_' + count, parentid: pid, topic: node.value, order:count,expanded:level<2 });
+                                if(j<_nodes.length-1 && _nodes[j+1]['name']=="topics"){
+                                    console.log(_nodes[j+1])
+                                    setData(_nodes[j+1].children, 'sub_'+count, level+1);
+                                }
+                            }
+                        }
+                    }
+
+                    setData(nodes, 'root', 1);
+
+                    let mind = {
+                        meta: {
+                            name: datas[idx * 3].value
+                        },
+                        format: 'node_array',
+                        data: _datas
+                    }
+                    let opts = {
+                        container: 'page',
+                        editable: false,
+                        themee: 'primary',
+                        view: {
+                            expander_style: 'number', // 使用数字显示子节点数量
+                        }
+                    };
+                    let jm = new jsMind(opts);
+                    console.log(mind)
+                    jm.show(mind)
+
+
+                })
+
+                $("footer li")[0].click()
+            },
+            error: function (xhr, type, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    }
+</script>

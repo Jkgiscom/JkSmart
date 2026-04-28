@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "../../proj/database/jknosql"
+		},
+		{
+			"path": "../../proj/database/web"
+		},
+		{
+			"path": "../../proj/jkdoc/web"
+		},
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../jkgis"
+		}
+	],
+	"settings": {
+		"java.project.sourcePaths": [
+			"src"
+		],
+		"java.project.outputPath": "bin",
+		"java.project.referencedLibraries": [
+			"lib/**/*.jar"
+		]
+	}
+}

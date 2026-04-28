@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>docx</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        article > .docx_toc.docx-num-35-undefined {
+            margin-bottom: 1em;
+        }
+
+        .docx_toc1 a, .docx_toc2 a {
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
+            color: #333;
+            position: relative;
+        }
+
+        .docx_toc1 a > span, .docx_toc2 a > span {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .docx_toc1 a > span:last-child, .docx_toc2 a > span:last-child {
+            float: right;
+            color: #333;
+            background-color: #fff;
+            text-indent: 1rem;
+            z-index: 10;
+            position: relative;
+        }
+
+        .docx_toc1 a > span:nth-last-child(2), .docx_toc2 a > span:nth-last-child(2) {
+            position: absolute;
+            display: inline-block;
+            top: 50%;
+            width: 95%;
+            height: 0 !important;
+            min-height: 1px;
+            vertical-align: middle;
+            border-bottom-style: dotted;
+        }
+
+        .docx_toc1 span.docx_afa {
+            text-decoration: none;
+        }
+
+        .docx_toc1 a:hover span.docx_afa {
+            text-decoration: underline;
+            color: #000;
+        }
+
+        .docx_toc1 a:hover span.docx_afa:first-child {
+            text-decoration: underline;
+            color: #000;
+        }
+
+        .docx_toc1 a:hover span:last-child {
+            text-decoration: underline;
+            color: #000;
+        }
+
+
+        .docx_toc1 a:hover span > span {
+            text-decoration: none !important;
+        }
+
+        .docx_toc2 a:hover span:last-child {
+            text-decoration: underline;
+            color: #000;
+        }
+
+        .docx_toc2 a:hover span.docx_afa {
+            text-decoration: underline;
+            color: #000;
+        }
+
+        .docx_toc2 a:hover span.docx_afa:first-child {
+            text-decoration: underline;
+            color: #000;
+        }
+
+        .docx_toc2 a:hover span > span {
+            text-decoration: none !important;
+        }
+        article img{
+            cursor: pointer;
+            transition: .2s ease-in-out;
+        }
+
+        article img:hover {
+            transform: scale(1.1);
+            box-shadow: rgba(0, 0, 0, 0.1) 0 0 27px 10px;
+            z-index: 10;
+        }
+        #marsk {position: absolute;z-index: 1000000;left: 0px;top: 0px;bottom: 0px;right: 0px; background: rgba(255, 254, 255, 0.4);
+            text-align: center;font-size: 40px;font-family: 黑体; padding: 100px 0 0 0; align-items:center;justify-content: center;display: none; }
+    </style>
+</head>
+
+<!--lib uses jszip-->
+<script src="./js/jszip.2.min.js"></script>
+<script src="./js/request.js"></script>
+<script src="./js/jquery-3.6.2.min.js"></script>
+<!-- docx-preview 可以npm install 下载，也可以使用官网cdn地址，自行百度-->
+<script src="./js/docx-preview.js"></script>
+<!-- <script src="https://volodymyrbaydalka.github.io/docxjs//dist/docx-preview.js"></script> -->
+
+<body>
+    <div id="marsk">
+        <img src="./images/loading5.gif">
+    </div>
+<div id="wordViewer"></div>
+<script type="module">
+    let url = request.getParameter("url");// utils.getQueryVariable("url");
+    console.log(url)
+    //url = url ? url : 'index.docx'
+    wordView(url);
+    //console.log(document.getElementsByTagName("title"));
+    //document.getElementsByTagName("title")[0].text = url;
+
+    function wordView(url) {
+        url = decodeURIComponent(url);
+        let vm = this;
+        let xhr = new XMLHttpRequest();
+        xhr.open("get", url, true);
+        xhr.responseType = "arraybuffer";
+        xhr.onloadstart = function(){
+            $("#marsk").show();
+        };
+        xhr.onloadend = function(){
+            $("#marsk").hide();
+        };
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                docx.renderAsync(xhr.response, document.getElementById("wordViewer"))
+                    .then(x => {console.log("docx: finished");mybind();});
+            }
+        };
+        xhr.send();
+    }
+
+    function mybind(){
+        var element = document.querySelectorAll("article img");
+        console.log(element)
+        for (let elementElement of element) {
+            console.log(elementElement)
+            elementElement.onclick = function (e) {
+                // 忽略
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

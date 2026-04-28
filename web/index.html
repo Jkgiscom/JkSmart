@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JKDoc极客文档通-常用文件格式在线预览-信创支持</title>
+    <link rel="stylesheet" href="./css/bootstrap-icons.css">
+    <style>
+        html,
+        body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            color: #888;
+        }
+
+        .header {
+            width: 100%;
+            height: auto;
+            margin: 0;
+            background-color : rgb(51,165,181);
+            overflow: hidden;
+        }
+
+        .header h3 {
+            width: 100%;
+            text-align: center;
+            margin: 20px auto;
+            color: #fff;
+            text-shadow: 0 1px 0 #333;
+            font-size: 44px;
+        }
+
+        .header h3 i {
+            font-style: normal;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+        }
+        .header h3 small {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .header ul {
+            width: 900px;
+            margin: 25px auto 10px auto;
+            font-size: 19px;
+            text-shadow: 0 1px 0 #333;
+            color: #f8f8f8;
+        }
+
+        .header ul li {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+        }
+
+        .demo {
+            width: 900px;
+            margin: 10px auto;
+            padding: 10px;
+            overflow: hidden;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+        }
+        .footer {
+            display: block;
+            width: 100%;
+            height: 100px;
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            text-align: center;
+            background-color: rgb(30,10,91);
+        }
+
+        a:link {
+            color: rgb(30,10,91);
+            text-decoration: none;
+            margin-right: 10px;
+            font-size: 27px;
+        }
+        a:visited {
+            color: rgb(30,10,91);
+        }
+        a:hover {
+            color: rgb(51,165,181);
+            text-decoration: underline;
+        }
+
+        .footer span {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h3><i>JKDoc</i> 极客文档通 <!--small>v1.0.0</small--></h3>
+        <ul>
+            <li>支持java与python混合编程</li>
+            <li>信创环境原生开发，无需适配</li>
+            <li>开箱即用，无需中间件，无需数据库</li>
+            <li>可使用python丰富插件轻松应对各种文档格式</li>
+            <li>不是开源项目，请联系客服获得技术支持</li>
+        </ul>
+    </div>
+    <div class="demo">
+        <div>
+            <a href="TMP/cgi?url=201711081623287924.doc" target="_blank">doc文档</a>
+            <a href="TMP/cgi?url=xlsdemo.xls" target="_blank">xls文档</a>
+            <a href="TMP/cgi?url=128fe8fb-8f68-4d57-a652-be635f917092.ppt" target="_blank">ppt文档</a>
+
+            <a href="#" onclick="doDocx('TMP/docxdemo.docx')">docx文档</a>
+            <a href="#" onclick="doXlsx('TMP/xlsxdemo.xlsx')">xlsx文档</a>
+            <a href="TMP/cgi?url=pptxdemo.pptx" target="_blank">pptx文档</a>
+        </div>
+        <div>
+            <a href="TMP/cgi?url=18345343-8712-4518-bb94-e50430a5bd3d.rtf" target="_blank">rtf文档</a>
+            <a href="TMP/cgi?url=36b9d8fe-678f-4ce0-b78b-6030a923df87.wps" target="_blank">wps文档</a>
+        </div>
+        <div>
+            <a href="TMP/cgi?url=95c2774d-1b29-428e-bdc5-521f33fc4555.xmind" target="_blank">xmind文档</a>
+            <a href="TMP/cgi?url=ad3042ed-20e2-41e8-b70c-4530104196a9.vsdx" target="_blank">vsdx文档</a>
+        </div>
+        <div>
+            <a href="">rar文档</a>
+            <a href="" target="_blank">zip文档</a>
+        </div>
+        <div>
+            <a href="TMP/cgi?url=212a240f-2b01-458e-bc63-3d16cd51bcb2.psd" target="_blank">psd文档</a>
+            <a href="TMP/cgi?url=53679b8b-1e2a-43ce-b8f6-08157dab67f8.ai" target="_blank">ai文档</a>
+            <a href="TMP/cgi?url=6c5a0cb3-f1a2-4c84-b3ed-b676300d1fba.cdr" target="_blank">cdr文档</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span>
+        COPYRIGHT (©) 2012 景阔科技 ALL RIGHTS RESERVED. 粤ICP备00000号-0
+        </span>
+    </div>
+</body>
+
+</html>
+
+<script>
+    function doDocx(_url){
+        window.open('docx.html?url='+encodeURIComponent(_url), '_blank')
+    }
+    function doXlsx(_url){
+        window.open('xlsx.html?url='+encodeURIComponent(_url), '_blank')
+    }
+</script>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../js/jquery.json-viewer.min.css">
+    <link rel="stylesheet" href="../css/bootstrap-icons.css">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 99%;
+            color: #888;
+        }
+
+        footer {
+            display: block;
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            overflow-x: auto;
+            box-sizing: border-box;
+            border-top: 1px solid #ccc;
+        }
+
+        footer li {
+            display: block;
+            float: left;
+            width: auto;
+            padding: 10px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        footer li.down {
+            color: #555;
+            font-size: 15px;
+        }
+
+        #page {
+            display: block;
+            width: 98%;
+            height: calc(98% - 25px);
+            border: 0px solid #fff;
+            box-sizing: border-box;
+            margin: 1%;
+            overflow-y: auto;
+        }
+
+        #page pre {
+            width: 100%;
+            height: auto;
+        }
+
+        #page .folder {
+            display: block;
+            width: 100%;
+            line-height: 35px;
+            float: left;
+            background-color: #fcfcfc;
+            text-indent: 10px;
+            margin: 0 0 10px 0;
+        }
+
+        #page .folder i {
+            color: gold;
+        }
+
+        #page .files {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        #page .files .file {
+            display: block;
+            float: left;
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+        }
+
+        #page .files .file div {
+            width: 100%;
+            height: calc(100% - 20px);
+            overflow: hidden;
+            background-color: #fefefe;
+            border-radius: 5px;
+            text-align: center;
+            margin: 0 0 5px 0;
+        }
+
+        #page .files .file div img {
+            width: auto;
+            height: 100%;
+        }
+
+        #page .files .file span {
+            display: block;
+            width: 100%;
+            height: 20px;
+            line-height: 12px;
+            font-size: 12px;
+            color: #555;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="page">
+    </div>
+</body>
+<script src="../js/jquery-3.6.2.min.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/jquery.json-viewer.min.js"></script>
+
+</html>
+<script>
+    const big_exts = {
+        "doc": "doc128.png", "docx": "doc128.png", "xls": "xls2.png", "xlsx": "xls2.png",
+        "pdf": "pdf256.png", "ppt": "ppt256.png", "pptx": "ppt256.png", "zip": "zip256.png", "rar": "zip256.png"
+    };
+
+    window.onload = () => {
+        let path = request.getParameter("url");
+        path = path.substring(0, path.lastIndexOf("."));
+        console.log(path);
+        let server = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+        console.log(server + path)
+        webRoot = server + path;
+        let datas = [];
+        window.location.href = path+"/"+path+".pdf";
+        // $.ajax(server + path + "/index.HTM", {
+        //     type: 'GET',
+        //     dataType: 'text', //服务器返回json格式数据
+        //     timeout: 15000, //15秒超时
+        //     success: function (rs) {
+        //         console.log(eval(rs));
+        //         //window.location.href = rs.pdf+"/"+rs.pdf+".pdf";
+        //     }
+        // })
+    }
+</script>

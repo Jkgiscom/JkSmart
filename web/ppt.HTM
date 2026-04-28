@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ppt相册</title>
+    <link rel="stylesheet" href="../css/bootstrap-icons.css">
+    <script src="../js/jquery-3.6.2.min.js"></script>
+    <script src="../js/request.js"></script>
+    <style type="text/css">
+    html,body{width: 100%;height: 100%; margin:0px; padding: 0px; overflow: hidden;}
+
+
+    #left {background-color: #f5f6f7; width: 200px; overflow-y: auto; height: 100%; display: block; float: left; }
+    #left .slide {display: block; float: left; width: calc(100% - 20px); height: 120px; text-align: center; box-sizing: border-box; border: 1px solid #ccc; margin: 5px 10px 5px 10px; }
+    #left .slide img {height: 100%; width: auto; max-width: 100%;}
+    #left .slide.down {border:4px solid #900}
+    #left .slide.down:hover {border:4px solid #e00}
+    #left .slide:hover {border: 4px solid #999;}
+    #center {background-color: #f5f6f7; display: block; float: left; width: calc(100% - 220px); height: calc(100% - 40px); margin: 0; padding: 20px 10px 20px 10px;}
+    #center .stage {width: 100%; height: 100%; border: 1px solid #ccc; text-align: center; overflow: hidden;}
+    #center .stage img {width: auto; height: 100%;max-width: 100%; }
+    #footer {position:fixed; z-index:4; right:15px;bottom:50%;color:#03c; background-color: transparent; 
+        width:calc(100% - 230px); font-size: 30px; text-align:center; font-weight:normal; font-family:微软雅黑,sans-serif;}
+    #footer i {background-color:#03c;color:#fff; display: block; width: 40px; height: 40px; overflow: hidden; border-radius: 5px;cursor: pointer;}
+    #footer i:hover {background-color: orangered;}
+    #footer i:nth-of-type(1) {float: left;}
+    #footer i:nth-of-type(2) {float: right;}
+
+    #err {position:fixed; z-index:5; right:0;bottom:0;color:#f00; background-color: transparent; 
+        width:100%; font-size: 15px; line-height: 30px; height: 30px; text-align:center; font-weight:normal; font-family:微软雅黑,sans-serif;}
+    </style>
+</head>
+<body>
+<div id="left"></div>
+<div id="center"></div>
+<div id="footer">
+        <i onclick="doPrev(this)" class="bi bi-caret-left-fill"></i>
+        <i onclick="doNext(this)" class="bi bi-caret-right-fill"></i>
+</div>
+<div id="err"></div>
+</body>
+</html>
+<script type="text/javascript">
+
+
+    var webRoot = "";
+    $(document).ready(function(){
+        var request = new Request({href : window.location.href});
+        var path = request.getParameter("url");
+        path = path.substring(0,path.lastIndexOf("."));
+        console.log(path);
+        var server = window.location.href.substring(0,window.location.href.lastIndexOf("/")+1);
+        console.log(server+path)
+        webRoot = server+path;
+        $.ajax(server+path+"/index.HTM",{
+                type: 'GET',
+                dataType: 'json', //服务器返回json格式数据
+                timeout: 15000, //15秒超时
+                success: function (rs) {
+                    console.log(rs);
+                    if(rs.rec==999){
+                        $("#err").html("该文档只解析了部分内容，请下载后再查看全部内容。")
+                    }
+                    setTimeout(function(){
+                        imgs = rs.files ;
+                        doLoad(imgs);
+                    }, 100);
+                },
+                error: function (xhr, type, errorThrown) {
+                    alert(errorThrown);
+                }
+        });
+    })
+    var imgs = null;
+    
+
+    var idx = 0 ;
+
+    function doLoad(args){
+        var div = document.getElementById("left");
+        for(var i=0; i<args.length; i++){
+                var d = document.createElement("div");
+                d.className = "slide";
+                if(i==0){
+                    d.className = "slide down";
+                }
+                var img = document.createElement("img");
+                img.src = webRoot+"/"+args[i] ;
+                img.setAttribute("xindex", i);
+                d.appendChild(img);
+                img.onclick=function(){
+                    idx = eval(this.getAttribute("xindex"));
+                    setCurrentPage();
+                }
+                div.appendChild(d);
+        }
+        setCurrentPage();
+    }
+
+    function setCurrentPage(){
+        var slides = document.getElementById("left").getElementsByTagName("div");
+        for(var i=0; i<slides.length; i++){
+            if(i==idx){
+                slides[i].className = "slide down";
+            }else{
+                slides[i].className = "slide";
+            }
+        }
+        var parent = slides[idx].parentNode;
+        var pos = slides[idx].getBoundingClientRect();
+        var pos1 = parent.getBoundingClientRect();
+        console.log(pos);
+        var t= pos.top+parent.scrollTop-120;
+        parent.scrollTo({
+            top: t ,
+            behavior: "smooth"
+        });
+        document.getElementById("center").innerHTML = "<div class='stage'><img src='"+webRoot+"/"+imgs[idx]+"'></div>";
+    }
+
+    function doPrev(evt){
+        if(idx>0){
+            idx--;
+            setCurrentPage();
+        }else{
+            alert("已经到头了")
+        }
+    }
+    function doNext(evt){
+        if(idx<imgs.length-1){
+            idx++;
+            setCurrentPage();
+        }else{
+            alert("已经是最后一页了")
+        }
+    }
+</script>
