@@ -79,3 +79,6 @@ zip \ rar \ 7z
 
 > 其他
 pdf \ wps
+
+
+如只需要可执行程序，请点击[这里下载](http://img.qykpzx.cn/ohow/5191851a-d33c-471a-b2e8-b58843eccd83.rar)，请联系客服获得支持。
